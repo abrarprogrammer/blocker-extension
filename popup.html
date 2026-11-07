@@ -6,15 +6,15 @@
     body { font-family: system-ui, sans-serif; width: 220px; padding: 12px; }
     h1 { font-size: 14px; margin: 0 0 8px; }
     .row { font-size: 13px; margin-bottom: 6px; color: #333; }
-    .big { font-size: 20px; font-weight: 600; margin: 4px 0; }
+    .big { font-size: 20px; font-weight: 600; margin: 4px 0 12px; }
     .locked { color: #c0392b; }
     .free { color: #27ae60; }
   </style>
 </head>
 <body>
-  <h1>Shorts Limiter</h1>
-  <div class="row" id="status"></div>
-  <div class="big" id="timeval"></div>
+  <h1>Scroll Limiter</h1>
+  <div id="rules"></div>
+  <script src="rules.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

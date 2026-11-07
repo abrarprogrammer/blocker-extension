@@ -8,23 +8,27 @@ function fmt(ms) {
   return `${s}s`;
 }
 
-chrome.storage.local.get(['accumulatedMs', 'lockUntil'], (d) => {
+chrome.storage.local.get(RULES.map(stateKey), (d) => {
   const now = Date.now();
-  const lockUntil = d.lockUntil || 0;
-  const statusEl = document.getElementById('status');
-  const timeEl = document.getElementById('timeval');
+  const container = document.getElementById('rules');
 
-  if (now < lockUntil) {
-    statusEl.textContent = 'Shorts locked. Time remaining:';
-    statusEl.className = 'row locked';
-    timeEl.textContent = fmt(lockUntil - now);
-    timeEl.className = 'big locked';
-  } else {
-    const accumulated = d.accumulatedMs || 0;
-    const limit = 5 * 60 * 1000;
-    statusEl.textContent = 'Shorts watch time (of 5m):';
-    statusEl.className = 'row free';
-    timeEl.textContent = fmt(accumulated) + ' / ' + fmt(limit);
-    timeEl.className = 'big free';
+  for (const rule of RULES) {
+    const state = d[stateKey(rule)] || {};
+    const locked = now < (state.lockUntil || 0);
+
+    const statusEl = document.createElement('div');
+    const timeEl = document.createElement('div');
+
+    if (locked) {
+      statusEl.textContent = `${rule.label} locked. Time remaining:`;
+      timeEl.textContent = fmt(state.lockUntil - now);
+    } else {
+      statusEl.textContent = `${rule.label} time (of ${fmt(rule.limitMs)}):`;
+      timeEl.textContent = fmt(state.accumulatedMs || 0) + ' / ' + fmt(rule.limitMs);
+    }
+    statusEl.className = `row ${locked ? 'locked' : 'free'}`;
+    timeEl.className = `big ${locked ? 'locked' : 'free'}`;
+
+    container.append(statusEl, timeEl);
   }
 });

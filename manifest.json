@@ -1,22 +1,32 @@
 {
   "manifest_version": 3,
-  "name": "Shorts Limiter",
-  "version": "1.0.0",
-  "description": "Closes the tab after 5 minutes of watching YouTube Shorts, then locks Shorts for 2 hours.",
+  "name": "Scroll Limiter",
+  "version": "1.1.0",
+  "description": "Closes YouTube Shorts after 5 minutes (2 hour lock) and Instagram/X after 10 minutes of use (20 minute lock).",
   "permissions": ["storage", "tabs"],
-  "host_permissions": ["*://*.youtube.com/*"],
+  "host_permissions": [
+    "*://*.youtube.com/*",
+    "*://*.instagram.com/*",
+    "*://*.x.com/*",
+    "*://*.twitter.com/*"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["*://www.youtube.com/*"],
-      "js": ["content.js"],
+      "matches": [
+        "*://www.youtube.com/*",
+        "*://*.instagram.com/*",
+        "*://*.x.com/*",
+        "*://*.twitter.com/*"
+      ],
+      "js": ["rules.js", "content.js"],
       "run_at": "document_idle"
     }
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Shorts Limiter"
+    "default_title": "Scroll Limiter"
   }
 }
