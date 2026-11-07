@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Shorts Limiter",
+  "version": "1.0.0",
+  "description": "Closes the tab after 5 minutes of watching YouTube Shorts, then locks Shorts for 2 hours.",
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["*://*.youtube.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Shorts Limiter"
+  }
+}
